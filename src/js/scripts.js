@@ -184,23 +184,23 @@ $(document).ready(function () {
         },
         data: {
             // Event title
-            title: "Ram and Antara's Wedding",
+            title: "Bruiloft Debbie & Mark",
 
             // Event start date
-            start: new Date('Nov 27, 2017 10:00'),
+            start: new Date(2024, 6, 1, 19, 0),
 
             // Event duration (IN MINUTES)
             // duration: 120,
 
             // You can also choose to set an end time
             // If an end time is set, this will take precedence over duration
-            end: new Date('Nov 29, 2017 00:00'),
+            end: new Date(2024, 6, 2, 0, 30),
 
             // Event Address
-            address: 'ITC Fortune Park Hotel, Kolkata',
+            address: 'De Soester Duinen, Soesterbergsestraat 188, 3768 MD Soest',
 
             // Event Description
-            description: "We can't wait to see you on our big day. For any queries or issues, please contact Mr. Amit Roy at +91 9876543210."
+            description: "Wat leuk dat je erbij bent! Mocht je nog vragen hebben, neem dan contact op met Debbie of Mark."
         }
     });
 
@@ -217,28 +217,30 @@ $(document).ready(function () {
 
         const data = JSON.stringify(formData);
 
+        console.log("request: " + data);
+
         $('#alert-wrapper').html(alert_markup('info', '<strong>Momentje...</strong> we slaan je gegevens op.'));
 
         if (MD5($('#invite_code').val()) !== 'cee8d6b7ce52554fd70354e37bbf44a2') {
             $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry...</strong> de gebruikte code is ongeldig.'));
         } else {
-            $.post('https://prod-242.westeurope.logic.azure.com:443/workflows/c472a935d6834a9e9caafe0fc17f57ae/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=SvnqE6rtY8dos6lkFWJBe5IXIJjduO95dSiXrCmyIoQ', data)
-                .done(function (data) {
-                    console.log(data);
-                    if (data.result === "error") {
-                        $('#alert-wrapper').html(alert_markup('danger', data.message));
-                    } else {
-                        $('#alert-wrapper').html('');
-                        $('#rsvp-modal').modal('show');
-                    }
-                })
-                .fail(function (data) {
-                    console.log(data);
+            $.ajax({
+                url: 'https://prod-242.westeurope.logic.azure.com:443/workflows/c472a935d6834a9e9caafe0fc17f57ae/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=SvnqE6rtY8dos6lkFWJBe5IXIJjduO95dSiXrCmyIoQ',
+                type: "POST",
+                data: data,
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    console.log(result);
+                    $('#alert-wrapper').html('');
+                    $('#rsvp-modal').modal('show');
+                },
+                error: function (error) {
+                    console.log(error);
                     $('#alert-wrapper').html(alert_markup('danger', '<strong>Sorry...</strong> er is iets fout gegaan.'));
-                });
+                }
+            });
         }
     });
-
 });
 
 /********************** Extras **********************/
@@ -246,39 +248,10 @@ $(document).ready(function () {
 function objectifyForm(formArray) {
     //serialize data function
     var returnArray = {};
-    for (var i = 0; i < formArray.length; i++){
+    for (var i = 0; i < formArray.length; i++) {
         returnArray[formArray[i]['name']] = formArray[i]['value'];
     }
     return returnArray;
-}
-
-// Google map
-function initMap() {
-    var location = {lat: 22.5932759, lng: 88.27027720000001};
-    var map = new google.maps.Map(document.getElementById('map-canvas'), {
-        zoom: 15,
-        center: location,
-        scrollwheel: false
-    });
-
-    var marker = new google.maps.Marker({
-        position: location,
-        map: map
-    });
-}
-
-function initBBSRMap() {
-    var la_fiesta = {lat: 20.305826, lng: 85.85480189999998};
-    var map = new google.maps.Map(document.getElementById('map-canvas'), {
-        zoom: 15,
-        center: la_fiesta,
-        scrollwheel: false
-    });
-
-    var marker = new google.maps.Marker({
-        position: la_fiesta,
-        map: map
-    });
 }
 
 // alert_markup
