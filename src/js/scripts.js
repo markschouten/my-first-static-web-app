@@ -187,20 +187,12 @@ $(document).ready(function () {
             title: "Bruiloft Debbie & Mark",
 
             // Event start date
-            start: new Date(2024, 6, 1, 19, 0),
-
-            // Event duration (IN MINUTES)
-            // duration: 120,
-
-            // You can also choose to set an end time
-            // If an end time is set, this will take precedence over duration
-            end: new Date(2024, 6, 2, 0, 30),
-
-            // Event Address
+            start: new Date(2024, 5, 1, 19, 0),
+            end: new Date(2024, 5, 2, 0, 30),
             address: 'De Soester Duinen, Soesterbergsestraat 188, 3768 MD Soest',
 
             // Event Description
-            description: "Wat leuk dat je erbij bent! Mocht je nog vragen hebben, neem dan contact op met Debbie of Mark."
+            description: "Wat leuk dat je erbij bent! Mocht je nog vragen hebben, neem dan gerust contact op met Debbie of Mark."
         }
     });
 
